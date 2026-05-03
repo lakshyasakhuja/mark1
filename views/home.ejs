@@ -1,0 +1,119 @@
+<%
+  locals.body = `
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🇮🇳 Built for Delhi NCR commuters</div>
+      <h1 class="hero-title">Commute Smarter.<br/><span class="gradient-text">Earn While You Travel.</span></h1>
+      <p class="hero-subtitle">Mark 1 finds the best multi-modal route for your daily commute — metro, auto, bus or cab — and rewards you with <strong>susCoins</strong> every time you choose eco-friendly travel.</p>
+      <div class="hero-actions">
+        <a href="/register" class="btn-primary btn-lg">Start Saving Today</a>
+        <a href="/login" class="btn-outline btn-lg">Sign In</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">₹50-150</span>
+          <span class="stat-label">saved per day</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">30+ min</span>
+          <span class="stat-label">saved per day</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">10x</span>
+          <span class="stat-label">susCoins per kg CO₂</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="route-card-demo">
+        <div class="demo-header">
+          <span>Ghaziabad → IGI Airport</span>
+          <span class="demo-badge">BEST ROUTE</span>
+        </div>
+        <div class="demo-legs">
+          <div class="demo-leg">🚇 Metro → Rajiv Chowk <span>22 km</span></div>
+          <div class="demo-leg">🛺 Auto → IGI T3 <span>15 km</span></div>
+        </div>
+        <div class="demo-stats">
+          <span>₹110 total</span>
+          <span>55 min</span>
+          <span class="coins-badge">+24 🪙 susCoins</span>
+        </div>
+        <div class="demo-saving">You save ₹1,050 vs cab 🎉</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2 class="section-title">Everything in one app</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🗺️</div>
+        <h3>AI Route Planning</h3>
+        <p>Get 3 optimized routes — Cheapest, Fastest, Balanced — across metro, auto, bus and cab.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🪙</div>
+        <h3>Earn susCoins</h3>
+        <p>Every eco-friendly trip earns you susCoins based on CO₂ saved vs taking a solo cab.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌿</div>
+        <h3>Track Your Impact</h3>
+        <p>See your total CO₂ saved, money saved, and environmental footprint in real-time.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>City Leaderboard</h3>
+        <p>Compete with other Delhi NCR commuters. Climb the ranks and become a green champion.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <h3>Real Savings</h3>
+        <p>Save ₹15,000–45,000 per year vs cabs. Your savings dashboard never lets you forget it.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Real-Time Rerouting</h3>
+        <p>Traffic jam? Metro delay? Mark 1 suggests the next best option instantly.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works">
+    <h2 class="section-title">How it works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Enter your route</h3>
+        <p>Pick origin and destination from Delhi NCR locations</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>AI suggests routes</h3>
+        <p>See Cheapest, Fastest & Balanced options with full cost breakdown</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Pick & earn</h3>
+        <p>Choose your route and earn susCoins for every eco-friendly km</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Track & redeem</h3>
+        <p>Watch your savings grow. Redeem coins for rewards</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Ready to commute smarter?</h2>
+    <p>Join thousands of Delhi NCR commuters saving money and the planet.</p>
+    <a href="/register" class="btn-primary btn-lg">Create Free Account</a>
+  </section>
+`;
+%>
+<%- include('layout') %>

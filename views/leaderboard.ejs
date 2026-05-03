@@ -1,0 +1,46 @@
+<%
+  locals.body = `
+  <div class="leaderboard-page">
+    <div class="lb-header">
+      <h1>🏆 Delhi NCR Green Leaderboard</h1>
+      <p>Top commuters saving money and the planet — every day.</p>
+      ${ rank > 0 ? '<div class="your-rank">Your rank: <strong>#' + rank + '</strong></div>' : '' }
+    </div>
+
+    <div class="lb-table-wrap">
+      <table class="lb-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Commuter</th>
+            <th>🪙 susCoins</th>
+            <th>🌿 CO₂ Saved</th>
+            <th>🚇 Trips</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${ leaderboard.map((u, i) => `
+          <tr class="${ u.username === user.username ? 'lb-me-row' : '' }">
+            <td class="lb-rank-cell">${ i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '#' + (i+1) }</td>
+            <td class="lb-name-cell">
+              ${u.username}
+              ${ u.username === user.username ? '<span class="you-badge">You</span>' : '' }
+            </td>
+            <td><strong>${u.coins}</strong></td>
+            <td>${u.co2Saved} kg</td>
+            <td>${u.tripsCompleted}</td>
+          </tr>
+          `).join('') }
+          ${ leaderboard.length === 0 ? '<tr><td colspan="5" class="empty-state">No commuters yet. Be the first!</td></tr>' : '' }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="lb-cta">
+      <p>Climb the ranks by choosing greener routes!</p>
+      <a href="/plan" class="btn-primary">Plan a Route Now</a>
+    </div>
+  </div>
+`;
+%>
+<%- include('layout') %>

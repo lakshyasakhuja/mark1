@@ -1,0 +1,100 @@
+<%
+  const boosted = typeof rank !== 'undefined' && rank > 0;
+  locals.body = `
+  <div class="dashboard">
+    <div class="dash-header">
+      <div>
+        <h1>Hey, ${user.username} 👋</h1>
+        <p class="dash-subtitle">Here's your commute impact summary</p>
+      </div>
+      <a href="/plan" class="btn-primary">Plan a Route</a>
+    </div>
+
+    <div class="dash-stats">
+      <div class="stat-card stat-coins">
+        <div class="stat-card-icon">🪙</div>
+        <div class="stat-card-value">${user.coins}</div>
+        <div class="stat-card-label">susCoins Earned</div>
+      </div>
+      <div class="stat-card stat-co2">
+        <div class="stat-card-icon">🌿</div>
+        <div class="stat-card-value">${user.co2Saved} kg</div>
+        <div class="stat-card-label">CO₂ Saved</div>
+      </div>
+      <div class="stat-card stat-savings">
+        <div class="stat-card-icon">💰</div>
+        <div class="stat-card-value">₹${user.totalSavingsINR}</div>
+        <div class="stat-card-label">Money Saved</div>
+      </div>
+      <div class="stat-card stat-trips">
+        <div class="stat-card-icon">🚇</div>
+        <div class="stat-card-value">${user.tripsCompleted}</div>
+        <div class="stat-card-label">Trips Logged</div>
+      </div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="dash-section">
+        <h2>Recent Trips</h2>
+        ${ trips.length === 0 ? '<p class="empty-state">No trips yet. <a href="/plan">Plan your first route!</a></p>' :
+          trips.map(t => `
+          <div class="trip-card">
+            <div class="trip-route">${t.origin} → ${t.destination}</div>
+            <div class="trip-meta">
+              <span class="trip-mode">${t.mode}</span>
+              <span>₹${t.costINR}</span>
+              <span>${t.durationMin} min</span>
+              <span class="trip-coins">+${t.coins} 🪙</span>
+            </div>
+            <div class="trip-impact">🌿 ${t.co2SavedKg} kg CO₂ saved · 💰 ₹${t.savingsINR} saved</div>
+          </div>
+        `).join('')
+        }
+        ${ trips.length > 0 ? '<a href="/plan" class="btn-outline btn-sm" style="margin-top:1rem">Plan Another Route</a>' : '' }
+      </div>
+
+      <div class="dash-section">
+        <h2>Your susCoin Wallet</h2>
+        <div class="wallet-card">
+          <div class="wallet-balance">
+            <span class="wallet-icon">🪙</span>
+            <span class="wallet-amount">${user.coins}</span>
+            <span class="wallet-label">susCoins</span>
+          </div>
+          <div class="wallet-info">
+            <p>Earn 10 coins per kg CO₂ saved.</p>
+            <p>Choose metro or bus over cab to earn more!</p>
+          </div>
+          <div class="rewards-preview">
+            <div class="reward-item ${ user.coins >= 50 ? '' : 'reward-locked' }">
+              <span>☕</span><span>Coffee at partner café</span><span>50 🪙</span>
+            </div>
+            <div class="reward-item ${ user.coins >= 100 ? '' : 'reward-locked' }">
+              <span>🚇</span><span>Metro day pass</span><span>100 🪙</span>
+            </div>
+            <div class="reward-item ${ user.coins >= 250 ? '' : 'reward-locked' }">
+              <span>🛍️</span><span>₹200 shopping voucher</span><span>250 🪙</span>
+            </div>
+            <div class="reward-item ${ user.coins >= 500 ? '' : 'reward-locked' }">
+              <span>✈️</span><span>Airport lounge pass</span><span>500 🪙</span>
+            </div>
+          </div>
+        </div>
+
+        <h2 style="margin-top:1.5rem">City Leaderboard</h2>
+        <div class="mini-leaderboard">
+          ${ leaderboard.slice(0,5).map((u, i) => `
+          <div class="lb-row ${ u.username === user.username ? 'lb-me' : '' }">
+            <span class="lb-rank">${['🥇','🥈','🥉','4','5'][i]}</span>
+            <span class="lb-name">${u.username}</span>
+            <span class="lb-coins">${u.coins} 🪙</span>
+          </div>
+          `).join('') }
+        </div>
+        <a href="/leaderboard" class="btn-outline btn-sm">View Full Leaderboard</a>
+      </div>
+    </div>
+  </div>
+`;
+%>
+<%- include('layout') %>

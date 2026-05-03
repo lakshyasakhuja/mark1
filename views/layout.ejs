@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mark 1 — Smart Commute + susCoin</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/" class="nav-brand">
+      <span class="brand-icon">🗺️</span>
+      <span>Mark <span class="brand-accent">1</span></span>
+    </a>
+    <div class="nav-links">
+      <% if (typeof user !== 'undefined' && user) { %>
+        <a href="/plan" class="nav-link">Plan Route</a>
+        <a href="/dashboard" class="nav-link">Dashboard</a>
+        <a href="/leaderboard" class="nav-link">Leaderboard</a>
+        <div class="nav-coins">
+          <span class="coin-icon">🪙</span>
+          <span><%= user.coins %> coins</span>
+        </div>
+        <a href="/logout" class="btn-outline">Logout</a>
+      <% } else { %>
+        <a href="/login" class="nav-link">Login</a>
+        <a href="/register" class="btn-primary">Get Started</a>
+      <% } %>
+    </div>
+  </nav>
+  <main>
+    <%- body %>
+  </main>
+  <footer class="footer">
+    <p>Mark 1 &times; susCoin — Smarter commutes, greener cities 🌿</p>
+  </footer>
+</body>
+</html>
