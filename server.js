@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const { searchStops, getStopCount, isGTFSLoaded } = require('./stops');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,7 +15,7 @@ app.use(session({
   secret: 'mark1-suscoin-secret-2025',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 } // 7 days
+  cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -22,11 +23,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// EJS doesn't support layouts natively — we use the include pattern
-// Override res.render to inject 'body' pattern via a wrapper
-// Actually we use the <%- include('layout') %> pattern in each view
+// ── API: stop autocomplete ──────────────────────────────────────────────
+app.get('/api/stops', (req, res) => {
+  const q = req.query.q || '';
+  if (q.length < 2) return res.json([]);
+  res.json(searchStops(q, 10));
+});
 
-// Routes
+// ── API: GTFS status ────────────────────────────────────────────────────
+app.get('/api/gtfs-status', (req, res) => {
+  res.json({ loaded: isGTFSLoaded(), stopCount: getStopCount() });
+});
+
+// ── Pages ───────────────────────────────────────────────────────────────
 app.get('/', (req, res) => {
   if (req.session.userId) return res.redirect('/dashboard');
   res.render('home');
@@ -47,5 +56,6 @@ app.use((req, res) => {
 
 app.listen(PORT, () => {
   console.log(`\n🗺️  Mark 1 × susCoin running at http://localhost:${PORT}`);
+  console.log(`   GTFS bus stops: ${isGTFSLoaded() ? getStopCount() + ' loaded' : 'not loaded — run: node scripts/load-gtfs.js'}`);
   console.log(`   Smart commute optimization for Delhi NCR\n`);
 });

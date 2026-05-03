@@ -9,26 +9,41 @@
       <p>Enter your journey — we'll find the smartest way to travel and reward you with susCoins.</p>
     </div>
 
+    <div id="gtfs-banner" class="gtfs-banner gtfs-loading">
+      <span id="gtfs-status-text">Checking bus stop data...</span>
+    </div>
+
     <div class="planner-layout">
       <div class="planner-form-col">
-        <form method="POST" action="/plan" class="planner-form">
+        <form method="POST" action="/plan" class="planner-form" autocomplete="off">
           <div class="form-group">
             <label>From</label>
-            <select name="origin" required>
-              <option value="">Select origin</option>
-              ${ locations.map(l => `<option value="${l.key}" ${ origin === l.key ? 'selected' : '' }>${l.label}</option>`).join('') }
-            </select>
+            <div class="autocomplete-wrap">
+              <input type="text" name="origin_label" id="origin_label" placeholder="Search bus stop or area..." required
+                oninput="autocomplete(this, 'origin_suggestions', 'origin')" onblur="hideDropdown('origin_suggestions', 300)"/>
+              <input type="hidden" name="origin" id="origin" value="${ origin || '' }"/>
+              <div class="autocomplete-dropdown" id="origin_suggestions"></div>
+            </div>
           </div>
           <div class="swap-icon" onclick="swapLocations()">⇅</div>
           <div class="form-group">
             <label>To</label>
-            <select name="destination" required>
-              <option value="">Select destination</option>
-              ${ locations.map(l => `<option value="${l.key}" ${ destination === l.key ? 'selected' : '' }>${l.label}</option>`).join('') }
-            </select>
+            <div class="autocomplete-wrap">
+              <input type="text" name="destination_label" id="destination_label" placeholder="Search bus stop or area..." required
+                oninput="autocomplete(this, 'destination_suggestions', 'destination')" onblur="hideDropdown('destination_suggestions', 300)"/>
+              <input type="hidden" name="destination" id="destination" value="${ destination || '' }"/>
+              <div class="autocomplete-dropdown" id="destination_suggestions"></div>
+            </div>
           </div>
           <button type="submit" class="btn-primary btn-full">Find Best Routes</button>
         </form>
+
+        <div class="quick-routes">
+          <p class="quick-label">Quick routes:</p>
+          <button class="quick-btn" onclick="setRoute('Ghaziabad','Ghaziabad','IGI Airport T3','igi_airport')">Ghaziabad → IGI Airport</button>
+          <button class="quick-btn" onclick="setRoute('Connaught Place','connaught_place','Noida Sector 18','noida_sector_18')">CP → Noida Sec 18</button>
+          <button class="quick-btn" onclick="setRoute('Ghaziabad','ghaziabad','Connaught Place','connaught_place')">Ghaziabad → CP</button>
+        </div>
 
         ${ error ? '<div class="alert alert-error">' + error + '</div>' : '' }
 
@@ -49,11 +64,11 @@
         <div class="routes-empty">
           <div class="routes-empty-icon">🚦</div>
           <h3>Enter your journey to see routes</h3>
-          <p>Try Ghaziabad → IGI Airport to see a real example</p>
+          <p>Try the quick routes on the left, or search for any Delhi NCR bus stop</p>
         </div>
         ` : `
         <div class="routes-list">
-          <h2 class="routes-title">${ locations.find(l=>l.key===origin)?.label || origin } → ${ locations.find(l=>l.key===destination)?.label || destination }</h2>
+          <h2 class="routes-title">${ origin } → ${ destination }</h2>
           ${ routes.map(route => `
           <div class="route-card ${ routeTypeColors[route.type] || '' }">
             <div class="route-card-header">
@@ -63,7 +78,6 @@
               </div>
               <div class="route-coins-badge">+${route.totalCoins} 🪙</div>
             </div>
-
             <div class="route-legs">
               ${ route.legs.map(leg => `
               <div class="leg">
@@ -73,29 +87,15 @@
               </div>
               `).join('<div class="leg-connector">↓</div>')}
             </div>
-
             <div class="route-totals">
-              <div class="total-item">
-                <span class="total-label">Cost</span>
-                <span class="total-val">₹${route.totalCost}</span>
-              </div>
-              <div class="total-item">
-                <span class="total-label">Time</span>
-                <span class="total-val">${route.totalDuration} min</span>
-              </div>
-              <div class="total-item">
-                <span class="total-label">CO₂ Saved</span>
-                <span class="total-val green">${route.totalCO2Saved} kg</span>
-              </div>
-              <div class="total-item">
-                <span class="total-label">₹ Saved</span>
-                <span class="total-val green">₹${route.totalSavings}</span>
-              </div>
+              <div class="total-item"><span class="total-label">Cost</span><span class="total-val">₹${route.totalCost}</span></div>
+              <div class="total-item"><span class="total-label">Time</span><span class="total-val">${route.totalDuration} min</span></div>
+              <div class="total-item"><span class="total-label">CO₂ Saved</span><span class="total-val green">${route.totalCO2Saved} kg</span></div>
+              <div class="total-item"><span class="total-label">₹ Saved</span><span class="total-val green">₹${route.totalSavings}</span></div>
             </div>
-
             <form method="POST" action="/plan/book">
-              <input type="hidden" name="origin" value="${ locations.find(l=>l.key===origin)?.label || origin }"/>
-              <input type="hidden" name="destination" value="${ locations.find(l=>l.key===destination)?.label || destination }"/>
+              <input type="hidden" name="origin" value="${ origin }"/>
+              <input type="hidden" name="destination" value="${ destination }"/>
               <input type="hidden" name="routeName" value="${route.name}"/>
               <input type="hidden" name="mode" value="${route.legs.map(l=>l.mode).join('+')}"/>
               <input type="hidden" name="distanceKm" value="${route.totalDistance}"/>
@@ -113,13 +113,93 @@
       </div>
     </div>
   </div>
+
   <script>
+    // ── GTFS status banner ──────────────────────────────────────────────
+    fetch('/api/gtfs-status')
+      .then(r => r.json())
+      .then(d => {
+        const banner = document.getElementById('gtfs-banner');
+        const text = document.getElementById('gtfs-status-text');
+        if (d.loaded) {
+          banner.className = 'gtfs-banner gtfs-ok';
+          text.innerHTML = '🚌 ' + d.stopCount.toLocaleString() + ' Delhi NCR bus stops loaded — search any stop above';
+        } else {
+          banner.className = 'gtfs-banner gtfs-warn';
+          text.innerHTML = '⚠️ Bus stop data not loaded yet. <a href="https://otd.delhi.gov.in" target="_blank">Download GTFS</a>, then run <code>node scripts/load-gtfs.js</code>. Using preset routes for now.';
+        }
+      });
+
+    // ── Autocomplete ────────────────────────────────────────────────────
+    let debounceTimer;
+
+    function autocomplete(input, dropdownId, hiddenId) {
+      clearTimeout(debounceTimer);
+      const q = input.value.trim();
+      if (q.length < 2) { document.getElementById(dropdownId).innerHTML = ''; return; }
+
+      debounceTimer = setTimeout(() => {
+        fetch('/api/stops?q=' + encodeURIComponent(q))
+          .then(r => r.json())
+          .then(stops => {
+            const dd = document.getElementById(dropdownId);
+            if (!stops.length) {
+              // Show preset options as fallback
+              dd.innerHTML = getPresetHTML(q, hiddenId, dropdownId);
+            } else {
+              dd.innerHTML = stops.map(s =>
+                '<div class="ac-item" onmousedown="selectStop(\'' + hiddenId + '\',\'' + dropdownId + '\',\'' + s.id + '\',\'' + s.name.replace(/'/g,"\\'") + '\')">' +
+                '<span class="ac-icon">🚌</span>' +
+                '<span class="ac-name">' + s.name + '</span>' +
+                '</div>'
+              ).join('');
+            }
+          });
+      }, 200);
+    }
+
+    function getPresetHTML(q, hiddenId, dropdownId) {
+      const presets = [
+        { id: 'ghaziabad', name: 'Ghaziabad', icon: '🏙️' },
+        { id: 'connaught_place', name: 'Connaught Place (CP)', icon: '🏛️' },
+        { id: 'noida_sector_18', name: 'Noida Sector 18', icon: '🏢' },
+        { id: 'igi_airport', name: 'IGI Airport T3', icon: '✈️' }
+      ];
+      const filtered = presets.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));
+      if (!filtered.length) return '<div class="ac-empty">No stops found</div>';
+      return filtered.map(p =>
+        '<div class="ac-item" onmousedown="selectStop(\'' + hiddenId + '\',\'' + dropdownId + '\',\'' + p.id + '\',\'' + p.name + '\')">' +
+        '<span class="ac-icon">' + p.icon + '</span>' +
+        '<span class="ac-name">' + p.name + '</span>' +
+        '</div>'
+      ).join('');
+    }
+
+    function selectStop(hiddenId, dropdownId, id, name) {
+      document.getElementById(hiddenId).value = id;
+      document.getElementById(hiddenId + '_label').value = name;
+      document.getElementById(dropdownId).innerHTML = '';
+    }
+
+    function hideDropdown(id, delay) {
+      setTimeout(() => { document.getElementById(id).innerHTML = ''; }, delay);
+    }
+
     function swapLocations() {
-      const origin = document.querySelector('select[name="origin"]');
-      const dest = document.querySelector('select[name="destination"]');
-      const tmp = origin.value;
-      origin.value = dest.value;
-      dest.value = tmp;
+      const oLabel = document.getElementById('origin_label');
+      const oVal = document.getElementById('origin');
+      const dLabel = document.getElementById('destination_label');
+      const dVal = document.getElementById('destination');
+      [oLabel.value, dLabel.value] = [dLabel.value, oLabel.value];
+      [oVal.value, dVal.value] = [dVal.value, oVal.value];
+    }
+
+    function setRoute(oLabel, oId, dLabel, dId) {
+      document.getElementById('origin_label').value = oLabel;
+      document.getElementById('origin').value = oId;
+      document.getElementById('destination_label').value = dLabel;
+      document.getElementById('destination').value = dId;
+      document.querySelector('.planner-form').submit();
     }
   </script>
 `;

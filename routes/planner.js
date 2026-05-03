@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { requireAuth } = require('../middleware/auth');
-const { getRoutes, LOCATIONS, MODE_ICONS } = require('../scoring');
+const { getRoutes, LOCATIONS, MODE_ICONS, normaliseLocation } = require('../scoring');
 const { findUserById, logTrip } = require('../db');
+const { getStopById } = require('../stops');
 
 router.get('/plan', requireAuth, (req, res) => {
   const user = findUserById(req.session.userId);
@@ -10,37 +11,46 @@ router.get('/plan', requireAuth, (req, res) => {
 });
 
 router.post('/plan', requireAuth, (req, res) => {
-  const { origin, destination } = req.body;
   const user = findUserById(req.session.userId);
+  // origin/destination can be a GTFS stop id OR a preset key OR a label
+  let originRaw = req.body.origin || req.body.origin_label || '';
+  let destRaw = req.body.destination || req.body.destination_label || '';
 
-  if (!origin || !destination || origin === destination) {
+  // Display labels
+  const originLabel = req.body.origin_label || originRaw;
+  const destLabel = req.body.destination_label || destRaw;
+
+  if (!originRaw || !destRaw || originRaw === destRaw) {
     return res.render('planner', {
       user, locations: LOCATIONS, routes: null,
-      origin, destination,
+      origin: originLabel, destination: destLabel,
       error: 'Please select different origin and destination.'
     });
   }
 
-  const routes = getRoutes(origin, destination);
+  // Try to get routes — normalise both ends
+  const routes = getRoutes(originRaw, destRaw);
+
   if (!routes) {
     return res.render('planner', {
       user, locations: LOCATIONS, routes: null,
-      origin, destination,
-      error: 'No routes found for this combination yet. Try Ghaziabad, CP, Noida Sector 18, or IGI Airport.'
+      origin: originLabel, destination: destLabel,
+      error: 'No optimized routes found for this combination yet. Try the quick routes below, or use: Ghaziabad, Connaught Place, Noida Sector 18, IGI Airport.'
     });
   }
 
-  res.render('planner', { user, locations: LOCATIONS, routes, origin, destination, error: null, modeIcons: MODE_ICONS });
+  res.render('planner', {
+    user, locations: LOCATIONS, routes,
+    origin: originLabel, destination: destLabel,
+    error: null, modeIcons: MODE_ICONS
+  });
 });
 
-// Log a chosen trip and award coins
 router.post('/plan/book', requireAuth, (req, res) => {
   const { origin, destination, routeName, mode, distanceKm, costINR, durationMin, coins, co2SavedKg, savingsINR } = req.body;
-
   logTrip({
     userId: req.session.userId,
-    origin,
-    destination,
+    origin, destination,
     mode: routeName,
     distanceKm: parseFloat(distanceKm),
     costINR: parseInt(costINR),
@@ -49,7 +59,6 @@ router.post('/plan/book', requireAuth, (req, res) => {
     co2SavedKg: parseFloat(co2SavedKg),
     savingsINR: parseInt(savingsINR)
   });
-
   res.redirect('/dashboard?booked=1');
 });
 

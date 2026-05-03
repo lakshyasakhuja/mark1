@@ -583,3 +583,65 @@ main { flex: 1; }
   .steps { flex-direction: column; align-items: center; }
   .step-arrow { transform: rotate(90deg); }
 }
+
+/* ====== GTFS BANNER ====== */
+.gtfs-banner {
+  max-width: 1200px;
+  margin: 0 auto 1.5rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.gtfs-loading { background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2); color: var(--text2); }
+.gtfs-ok { background: rgba(63,185,80,0.08); border: 1px solid rgba(63,185,80,0.2); color: var(--green); }
+.gtfs-warn { background: rgba(240,180,41,0.08); border: 1px solid rgba(240,180,41,0.2); color: var(--yellow); }
+.gtfs-warn a { color: var(--yellow); }
+.gtfs-warn code { background: rgba(0,0,0,0.2); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.82rem; }
+
+/* ====== AUTOCOMPLETE ====== */
+.autocomplete-wrap { position: relative; }
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0; right: 0;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  z-index: 50;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.ac-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: background 0.15s;
+}
+.ac-item:hover { background: rgba(255,255,255,0.05); }
+.ac-icon { font-size: 1rem; }
+.ac-name { flex: 1; }
+.ac-empty { padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text2); }
+
+/* ====== QUICK ROUTES ====== */
+.quick-routes { margin-bottom: 1rem; }
+.quick-label { font-size: 0.78rem; color: var(--text2); margin-bottom: 0.4rem; }
+.quick-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text2);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.83rem;
+  cursor: pointer;
+  margin-bottom: 0.4rem;
+  transition: border-color 0.15s, color 0.15s;
+}
+.quick-btn:hover { border-color: var(--accent); color: var(--text); }
