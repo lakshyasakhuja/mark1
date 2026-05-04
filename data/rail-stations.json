@@ -1,0 +1,189 @@
+[
+  {
+    "id": "NDLS", "name": "New Delhi", "lat": 28.6431, "lng": 77.2199,
+    "lines": ["northern", "eastern", "western", "southern"],
+    "zone": "central", "interchange": ["yellow_metro", "airport_express"],
+    "distanceFromNDLS": 0
+  },
+  {
+    "id": "DLI", "name": "Old Delhi (Delhi Junction)", "lat": 28.6587, "lng": 77.2282,
+    "lines": ["northern", "eastern", "ring"],
+    "zone": "central", "interchange": ["yellow_metro"],
+    "distanceFromNDLS": 2.5
+  },
+  {
+    "id": "NZM", "name": "Hazrat Nizamuddin", "lat": 28.5875, "lng": 77.2527,
+    "lines": ["ring", "southern"],
+    "zone": "south", "interchange": ["violet_metro"],
+    "distanceFromNDLS": 8
+  },
+  {
+    "id": "LJN_HALT", "name": "Lajpat Nagar", "lat": 28.5685, "lng": 77.2394,
+    "lines": ["ring"],
+    "zone": "south", "interchange": ["pink_metro"],
+    "distanceFromNDLS": 10
+  },
+  {
+    "id": "OKA", "name": "Okhla", "lat": 28.5487, "lng": 77.2721,
+    "lines": ["ring", "southern"],
+    "zone": "south", "interchange": [],
+    "distanceFromNDLS": 13
+  },
+  {
+    "id": "TKD", "name": "Tughlakabad", "lat": 28.5017, "lng": 77.2826,
+    "lines": ["ring", "southern"],
+    "zone": "south", "interchange": [],
+    "distanceFromNDLS": 18
+  },
+  {
+    "id": "BVH", "name": "Badarpur", "lat": 28.5026, "lng": 77.3031,
+    "lines": ["southern"],
+    "zone": "south", "interchange": ["violet_metro"],
+    "distanceFromNDLS": 21
+  },
+  {
+    "id": "FDB", "name": "Faridabad", "lat": 28.4089, "lng": 77.3178,
+    "lines": ["southern"],
+    "zone": "ncr_south", "interchange": [],
+    "distanceFromNDLS": 30
+  },
+  {
+    "id": "BLB", "name": "Ballabhgarh", "lat": 28.3415, "lng": 77.3222,
+    "lines": ["southern"],
+    "zone": "ncr_south", "interchange": [],
+    "distanceFromNDLS": 38
+  },
+  {
+    "id": "PWL", "name": "Palwal", "lat": 28.1432, "lng": 77.3301,
+    "lines": ["southern"],
+    "zone": "ncr_south", "interchange": [],
+    "distanceFromNDLS": 60
+  },
+  {
+    "id": "SZM", "name": "Sabzi Mandi", "lat": 28.6711, "lng": 77.2085,
+    "lines": ["northern", "ring"],
+    "zone": "north", "interchange": [],
+    "distanceFromNDLS": 3
+  },
+  {
+    "id": "DEE", "name": "Delhi Sarai Rohilla", "lat": 28.6668, "lng": 77.1889,
+    "lines": ["western"],
+    "zone": "north", "interchange": [],
+    "distanceFromNDLS": 4
+  },
+  {
+    "id": "PNP", "name": "Panipat", "lat": 29.3909, "lng": 76.9635,
+    "lines": ["northern"],
+    "zone": "ncr_north", "interchange": [],
+    "distanceFromNDLS": 90
+  },
+  {
+    "id": "SNP", "name": "Sonipat", "lat": 28.9931, "lng": 77.0151,
+    "lines": ["northern"],
+    "zone": "ncr_north", "interchange": [],
+    "distanceFromNDLS": 50
+  },
+  {
+    "id": "GZB", "name": "Ghaziabad", "lat": 28.6580, "lng": 77.4322,
+    "lines": ["eastern"],
+    "zone": "ncr_east", "interchange": ["red_metro"],
+    "distanceFromNDLS": 27
+  },
+  {
+    "id": "MRT", "name": "Meerut City", "lat": 28.9845, "lng": 77.7064,
+    "lines": ["eastern"],
+    "zone": "ncr_east", "interchange": [],
+    "distanceFromNDLS": 72
+  },
+  {
+    "id": "DSA", "name": "Shahdara", "lat": 28.6688, "lng": 77.2965,
+    "lines": ["eastern", "ring"],
+    "zone": "east", "interchange": ["red_metro"],
+    "distanceFromNDLS": 10
+  },
+  {
+    "id": "TKJ", "name": "Tilak Bridge", "lat": 28.6390, "lng": 77.2462,
+    "lines": ["ring"],
+    "zone": "central", "interchange": [],
+    "distanceFromNDLS": 2
+  },
+  {
+    "id": "DEC", "name": "Delhi Cantt", "lat": 28.5947, "lng": 77.1415,
+    "lines": ["ring", "western"],
+    "zone": "west", "interchange": [],
+    "distanceFromNDLS": 12
+  },
+  {
+    "id": "PTN", "name": "Patel Nagar", "lat": 28.6529, "lng": 77.1667,
+    "lines": ["ring"],
+    "zone": "west", "interchange": [],
+    "distanceFromNDLS": 6
+  },
+  {
+    "id": "SKB", "name": "Shakurbasti", "lat": 28.6832, "lng": 77.1326,
+    "lines": ["ring", "western"],
+    "zone": "northwest", "interchange": [],
+    "distanceFromNDLS": 11
+  },
+  {
+    "id": "RWR", "name": "Rewari", "lat": 28.1989, "lng": 76.6186,
+    "lines": ["western"],
+    "zone": "ncr_west", "interchange": [],
+    "distanceFromNDLS": 82
+  },
+  {
+    "id": "GGN", "name": "Gurgaon", "lat": 28.4595, "lng": 77.0266,
+    "lines": ["western", "southern"],
+    "zone": "ncr_south", "interchange": ["yellow_metro"],
+    "distanceFromNDLS": 32
+  },
+  {
+    "id": "ANV", "name": "Anand Vihar Terminal", "lat": 28.6469, "lng": 77.3159,
+    "lines": ["eastern"],
+    "zone": "east", "interchange": ["blue_metro", "pink_metro"],
+    "distanceFromNDLS": 14
+  },
+  {
+    "id": "SBB", "name": "Shivaji Bridge", "lat": 28.6318, "lng": 77.2198,
+    "lines": ["ring"],
+    "zone": "central", "interchange": [],
+    "distanceFromNDLS": 1.5
+  },
+  {
+    "id": "CHN", "name": "Chanakyapuri", "lat": 28.5988, "lng": 77.1781,
+    "lines": ["ring"],
+    "zone": "southwest", "interchange": [],
+    "distanceFromNDLS": 10
+  },
+  {
+    "id": "SNR", "name": "Sarojini Nagar", "lat": 28.5765, "lng": 77.1934,
+    "lines": ["ring"],
+    "zone": "south", "interchange": [],
+    "distanceFromNDLS": 11
+  },
+  {
+    "id": "LDH", "name": "Lodhi Colony", "lat": 28.5932, "lng": 77.2290,
+    "lines": ["ring"],
+    "zone": "south", "interchange": [],
+    "distanceFromNDLS": 7
+  },
+  {
+    "id": "SWGR", "name": "Sewa Nagar", "lat": 28.5793, "lng": 77.2274,
+    "lines": ["ring"],
+    "zone": "south", "interchange": [],
+    "distanceFromNDLS": 9
+  },
+  {
+    "id": "INPR", "name": "Inderpuri Halt", "lat": 28.6225, "lng": 77.1534,
+    "lines": ["ring"],
+    "zone": "west", "interchange": [],
+    "distanceFromNDLS": 9
+  },
+  {
+    "id": "IGI_T3", "name": "IGI Airport T3 (Nearest: Delhi Cantt)", "lat": 28.5562, "lng": 77.1000,
+    "lines": [],
+    "zone": "southwest", "interchange": ["airport_express"],
+    "distanceFromNDLS": 16,
+    "note": "No direct rail station — use Delhi Cantt + auto, or Airport Express"
+  }
+]
